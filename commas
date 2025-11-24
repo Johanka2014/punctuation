@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comma Practice Hub</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f7f7f7;
+            min-height: 100vh;
+        }
+        /* Styling for feedback messages in full sentence input activities */
+        .feedback {
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            margin-top: 1rem;
+            font-weight: 600;
+            line-height: 1.5;
+            white-space: pre-wrap; /* Preserve formatting for explanations */
+        }
+        .feedback.correct {
+            background-color: #d1fae5; /* Green-100 */
+            color: #065f46; /* Green-700 */
+        }
+        .feedback.incorrect {
+            background-color: #fee2e2; /* Red-100 */
+            color: #991b1b; /* Red-800 */
+        }
+        .correct-answer-box {
+            margin-top: 1rem;
+            padding: 1rem;
+            background-color: #eef2ff; /* Indigo-50 */
+            border-left: 4px solid #6366f1; /* Indigo-500 */
+            font-family: 'Inter', monospace;
+            white-space: pre-wrap;
+            font-weight: 500;
+        }
+        /* Custom styling for the practice sentences */
+        .practice-sentence-box {
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 0.5rem;
+            background-color: #fff;
+        }
+        .practice-sentence-input {
+            width: 100%;
+            padding: 0.75rem;
+            margin-top: 0.5rem;
+            border: 2px solid #ccc;
+            border-radius: 0.375rem;
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            transition: border-color 0.2s;
+        }
+        .practice-sentence-input:focus {
+            border-color: #6366f1; /* Indigo-500 */
+            outline: none;
+        }
+
+        /* Styling for Multiple Choice Options */
+        .mc-option {
+            display: block;
+            padding: 0.75rem;
+            margin-bottom: 0.5rem;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .mc-option:hover {
+            background-color: #f9fafb;
+            border-color: #6366f1;
+        }
+        .mc-option input[type="radio"] {
+            margin-right: 0.75rem;
+            accent-color: #6366f1;
+        }
+        .mc-option.correct-choice {
+            background-color: #d1fae5; /* Green-100 */
+            border-color: #10b981; /* Green-500 */
+        }
+        .mc-option.incorrect-choice {
+            background-color: #fee2e2; /* Red-100 */
+            border-color: #ef4444; /* Red-500 */
+        }
+    </style>
+</head>
+<body class="p-4 sm:p-8">
+
+<!-- HEADER WITH COMMA RULES -->
+<header class="mb-10 p-6 bg-white rounded-xl shadow-2xl">
+    <h1 class="text-4xl sm:text-5xl font-extrabold text-indigo-700 mb-4 text-center">
+        Comma Commander: Rules of Use 📝
+    </h1>
+    <div class="space-y-4 text-gray-700">
+
+        <!-- Rule 1: Linking Independent Clauses -->
+        <div class="p-3 bg-indigo-50 rounded-lg border-l-4 border-indigo-500">
+            <h3 class="font-bold text-lg text-indigo-700 mb-1">1. Separating Independent Clauses</h3>
+            <p>Use a comma before a coordinating conjunction (like <code class="font-mono bg-indigo-100 p-1 rounded">and</code>, <code class="font-mono bg-indigo-100 p-1 rounded">but</code>, or <code class="font-mono bg-indigo-100 p-1 rounded">or</code>) when linking **two complete statements (independent clauses)** that each have their own subject.</p>
+            <p class="mt-1 italic text-sm">Example: <span class="font-mono">Daniel was tired, and his feet were hurting.</span></p>
+            <p class="mt-1 text-sm text-red-700">**Important:** Do not use a comma if there is only one subject. (Example: Daniel sat down and took his shoes off.)</p>
+        </div>
+
+        <!-- Rule 2: Introductory Clauses/Phrases -->
+        <div class="p-3 bg-emerald-50 rounded-lg border-l-4 border-emerald-500">
+            <h3 class="font-bold text-lg text-emerald-700 mb-1">2. Introductory Clauses/Phrases</h3>
+            <p>Use a comma after an introductory clause or phrase that starts with a linking word like <code class="font-mono bg-emerald-100 p-1 rounded">when</code> or <code class="font-mono bg-emerald-100 p-1 rounded">although</code>.</p>
+            <p class="mt-1 italic text-sm">Example: <span class="font-mono">When the office is busy, Sarah has to work late.</span></p>
+        </div>
+
+        <!-- Rule 3 & 4 Combined (Lists & Parenthetical/Adverbs) -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="p-3 bg-rose-50 rounded-lg border-l-4 border-rose-500">
+                <h3 class="font-bold text-lg text-rose-700 mb-1">3. Separating Items in a List</h3>
+                <p>Use commas to separate items in a list of more than two. In British English, the final comma (Oxford/serial comma) before 'and' is usually omitted.</p>
+                <p class="mt-1 italic text-sm">Example: <span class="font-mono">I went out with Rachel, Vicky, Emma and Matthew.</span></p>
+            </div>
+            <div class="p-3 bg-sky-50 rounded-lg border-l-4 border-sky-500">
+                <h3 class="font-bold text-lg text-sky-700 mb-1">4. Setting Off Adverbs or Phrases</h3>
+                <p>Use commas to separate off an adverb (like <code class="font-mono bg-sky-100 p-1 rounded">unfortunately</code>) or a phrase that interrupts the main flow of the sentence.</p>
+                <p class="mt-1 italic text-sm">Example: <span class="font-mono">Sarah, unfortunately, has to work late.</span></p>
+            </div>
+        </div>
+    </div>
+    <p class="text-center text-lg text-gray-600 mt-8 pt-4 border-t border-gray-200">
+        Ready to practice? Choose an activity tile below!
+    </p>
+</header>
+<!-- END OF UPDATED HEADER -->
+
+
+<!-- Main Navigation/Activity Tiles -->
+<div id="activity-tiles" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-6 mb-12">
+    <!-- Activity 1 -->
+    <button onclick="showActivity('lists-beginner')" class="activity-tile group bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition transform hover:-translate-y-1 border-b-4 border-indigo-500">
+        <h2 class="text-2xl font-bold text-gray-800 group-hover:text-indigo-600">1. Comma Lists: Beginner (A)</h2>
+        <p class="text-gray-500 mt-2">Practice separating items in a series (nouns/verbs). Full sentence input.</p>
+    </button>
+    <!-- Activity 2 -->
+    <button onclick="showActivity('mixed-grade4')" class="activity-tile group bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition transform hover:-translate-y-1 border-b-4 border-emerald-500">
+        <h2 class="text-2xl font-bold text-gray-800 group-hover:text-emerald-600">2. Mixed Practice: Grade 4 (A)</h2>
+        <p class="text-gray-500 mt-2">Practice lists, direct address, and dialogue. Full sentence input.</p>
+    </button>
+    <!-- Activity 3 -->
+    <button onclick="showActivity('comma-cop')" class="activity-tile group bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition transform hover:-translate-y-1 border-b-4 border-rose-500">
+        <h2 class="text-2xl font-bold text-gray-800 group-hover:text-rose-600">3. Comma Cop: Multiple Choice</h2>
+        <p class="text-gray-500 mt-2">Identify the single correctly punctuated sentence (puzzle format).</p>
+    </button>
+    <!-- Activity 4 -->
+    <button onclick="showActivity('complex-sentences')" class="activity-tile group bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition transform hover:-translate-y-1 border-b-4 border-sky-500">
+        <h2 class="text-2xl font-bold text-gray-800 group-hover:text-sky-600">4. Complex Sentences (A)</h2>
+        <p class="text-gray-500 mt-2">High-level practice with clauses and long phrases. Full sentence input.</p>
+    </button>
+    <!-- Activity 5 -->
+    <button onclick="showActivity('list-practice-b')" class="activity-tile group bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition transform hover:-translate-y-1 border-b-4 border-yellow-500">
+        <h2 class="text-2xl font-bold text-gray-800 group-hover:text-yellow-600">5. More List Practice (B)</h2>
+        <p class="text-gray-500 mt-2">Another set of list comma exercises. Full sentence input.</p>
+    </button>
+    <!-- Activity 6 -->
+    <button onclick="showActivity('list-practice-c')" class="activity-tile group bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition transform hover:-translate-y-1 border-b-4 border-purple-500">
+        <h2 class="text-2xl font-bold text-gray-800 group-hover:text-purple-600">6. More Mixed Practice (C)</h2>
+        <p class="text-gray-500 mt-2">Focus on dialogue, direct address, and lists (set C). Full sentence input.</p>
+    </button>
+    <!-- Activity 7 -->
+    <button onclick="showActivity('list-practice-d')" class="activity-tile group bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition transform hover:-translate-y-1 border-b-4 border-pink-500">
+        <h2 class="text-2xl font-bold text-gray-800 group-hover:text-pink-600">7. More Mixed Practice (D)</h2>
+        <p class="text-gray-500 mt-2">Focus on dialogue, direct address, and lists (set D). Full sentence input.</p>
+    </button>
+    <!-- Activity 8 (Free Edit) -->
+    <button onclick="showActivity('jane-eyre-free-edit')" class="activity-tile group bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition transform hover:-translate-y-1 border-b-4 border-red-500">
+        <h2 class="text-2xl font-bold text-gray-800 group-hover:text-red-600">8. Jane Eyre Passage (Edit)</h2>
+        <p class="text-gray-500 mt-2">High-level, free-form text editing challenge for literary text.</p>
+    </button>
+    <!-- Activity 9 (Free Edit) -->
+    <button onclick="showActivity('elephant-facts-free-edit')" class="activity-tile group bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition transform hover:-translate-y-1 border-b-4 border-teal-500">
+        <h2 class="text-2xl font-bold text-gray-800 group-hover:text-teal-600">9. Elephant Facts (Edit)</h2>
+        <p class="text-gray-500 mt-2">High-level, free-form text editing challenge for factual text.</p>
+    </button>
+    <!-- Activity 10 (Multiple Choice) -->
+    <button onclick="showActivity('correct-sentence-choice')" class="activity-tile group bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition transform hover:-translate-y-1 border-b-4 border-orange-500">
+        <h2 class="text-2xl font-bold text-gray-800 group-hover:text-orange-600">10. Correct Sentence Choice</h2>
+        <p class="text-gray-500 mt-2">Identify the correctly punctuated sentence from pairs.</p>
+    </button>
+</div>
+
+<!-- Activity Containers -->
+
+<div id="lists-beginner" class="activity-container hidden bg-white p-6 sm:p-8 rounded-xl shadow-2xl mb-10">
+    <div class="flex justify-between items-center mb-6 border-b pb-4">
+        <h2 class="text-3xl font-bold text-indigo-700">1. Comma Lists: Beginner (A)</h2>
+        <button onclick="showActivity('home')" class="text-indigo-500 hover:text-indigo-700 font-semibold transition">← Back to Hub</button>
+    </div>
+    <p class="mb-6 text-gray-600 bg-indigo-50 p-3 rounded-lg border-l-4 border-indigo-400">
+        **Rule Focus:** Separate items in a series of three or more. **Type the entire corrected sentence** into the box.
+    </p>
+    <div id="lists-beginner-content" class="space-y-6"></div>
+    <div class="mt-8 text-center">
+        <button onclick="checkAnswers('lists-beginner')" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-8 rounded-full transition transform hover:scale-105 shadow-md">Check My Commas</button>
+        <button onclick="resetActivity('lists-beginner')" class="ml-4 bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-3 px-8 rounded-full transition transform hover:scale-105 shadow-md">Reset</button>
+    </div>
+    <div id="lists-beginner-score" class="mt-6 text-center text-xl font-semibold"></div>
+</div>
+
+<div id="mixed-grade4" class="activity-container hidden bg-white p-6 sm:p-8 rounded-xl shadow-2xl mb-10">
+    <div class="flex justify-between items-center mb-6 border-b pb-4">
+        <h2 class="text-3xl font-bold text-emerald-700">2. Mixed Practice: Grade 4 (A)</h2>
+        <button onclick="showActivity('home')" class="text-emerald-500 hover:text-emerald-700 font-semibold transition">← Back to Hub</button>
+    </div>
+    <p class="mb-6 text-gray-600 bg-emerald-50 p-3 rounded-lg border-l-4 border-emerald-400">
+        **Rule Focus:** Lists, direct address, dialogue, and introductory words. **Type the entire corrected sentence** into the box.
+    </p>
+    <div id="mixed-grade4-content" class="space-y-6"></div>
+    <div class="mt-8 text-center">
+        <button onclick="checkAnswers('mixed-grade4')" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-8 rounded-full transition transform hover:scale-105 shadow-md">Check My Commas</button>
+        <button onclick="resetActivity('mixed-grade4')" class="ml-4 bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-3 px-8 rounded-full transition transform hover:scale-105 shadow-md">Reset</button>
+    </div>
+    <div id="mixed-grade4-score" class="mt-6 text-center text-xl font-semibold"></div>
+</div>
+
+<div id="comma-cop" class="activity-container hidden bg-white p-6 sm:p-8 rounded-xl shadow-2xl mb-10">
+    <div class="flex justify-between items-center mb-6 border-b pb-4">
+        <h2 class="text-3xl font-bold text-rose-700">3. Comma Cop: Multiple Choice Game</h2>
+        <button onclick="showActivity('home')" class="text-rose-500 hover:text-rose-700 font-semibold transition">← Back to Hub</button>
+    </div>
+    <p class="mb-6 text-gray-600 bg-rose-50 p-3 rounded-lg border-l-4 border-rose-400">
+        **Rule Focus:** Choose the single correctly punctuated sentence. The solutions form a riddle answer. *Note: The source puzzle may follow conventions that occasionally differ from strict British non-serial comma usage. Choose the best option provided.*
+    </p>
+    <div id="comma-cop-content" class="space-y-8"></div>
+    <div class="mt-8 text-center">
+        <button onclick="checkAnswers('comma-cop')" class="bg-rose-600 hover:bg-rose-700 text-white font-bold py-3 px-8 rounded-full transition transform hover:scale-105 shadow-md">Submit Answers</button>
+        <button onclick="resetActivity('comma-cop')" class="ml-4 bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-3 px-8 rounded-full transition transform hover:scale-105 shadow-md">Reset</button>
+    </div>
+    <div id="comma-cop-score" class="mt-6 text-center text-xl font-semibold"></div>
+</div>
+
+<div id="complex-sentences" class="activity-container hidden bg-white p-6 sm:p-8 rounded-xl shadow-2xl mb-10">
+    <div class="flex justify-between items-center mb-6 border-b pb-4">
+        <h2 class="text-3xl font-bold text-sky-700">4. Complex Sentences (A)</h2>
+        <button onclick="showActivity('home')" class="text-sky-500 hover:text-sky-700 font-semibold transition">← Back to Hub</button>
+    </div>
+    <p class="mb-6 text-gray-600 bg-sky-50 p-3 rounded-lg border-l-4 border-sky-400">
+        **Rule Focus:** Clauses, modifying phrases, and separating elements that disrupt the main sentence flow. **Type the entire corrected sentence** into the box.
+    </p>
+    <div id="complex-sentences-content" class="space-y-6"></div>
+    <div class="mt-8 text-center">
+        <button onclick="checkAnswers('complex-sentences')" class="bg-sky-600 hover:bg-sky-700 text-white font-bold py-3 px-8 rounded-full transition transform hover:scale-105 shadow-md">Check My Commas</button>
+        <button onclick="resetActivity('complex-sentences')" class="ml-4 bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-3 px-8 rounded-full transition transform hover:scale-105 shadow-md">Reset</button>
+    </div>
+    <div id="complex-sentences-score" class="mt-6 text-center text-xl font-semibold"></div>
+</div>
+
+<div id="list-practice-b" class="activity-container hidden bg-white p-6 sm:p-8 rounded-xl shadow-2xl mb-10">
+    <div class="flex justify-between items-center mb-6 border-b pb-4">
+        <h2 class="text-3xl font-bold text-yellow-700">5. More List Practice (B)</h2>
+        <button onclick="showActivity('home')" class="text-yellow-500 hover:text-yellow-700 font-semibold transition">← Back to Hub</button>
+    </div>
+    <p class="mb-6 text-gray-600 bg-yellow-50 p-3 rounded-lg border-l-4 border-yellow-400">
+        **Rule Focus:** Focus on correctly punctuating lists of nouns and actions. **Type the entire corrected sentence** into the box.
+    </p>
+    <div id="list-practice-b-content" class="space-y-6"></div>
+    <div class="mt-8 text-center">
+        <button onclick="checkAnswers('list-practice-b')" class="bg-yellow-600 hover:bg-yellow-700 text-white font-bold py-3 px-8 rounded-full transition transform hover:scale-105 shadow-md">Check My Commas</button>
+        <button onclick="resetActivity('list-practice-b')" class="ml-4 bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-3 px-8 rounded-full transition transform hover:scale-105 shadow-md">Reset</button>
+    </div>
+    <div id="list-practice-b-score" class="mt-6 text-center text-xl font-semibold"></div>
+</div>
+
+<div id="list-practice-c" class="activity-container hidden bg-white p-6 sm:p-8 rounded-xl shadow-2xl mb-10">
+    <div class="flex justify-between items-center mb-6 border-b pb-4">
+        <h2 class="text-3xl font-bold text-purple-700">6. More Mixed Practice (C)</h2>
+        <button onclick="showActivity('home')" class="text-purple-500 hover:text-purple-700 font-semibold transition">← Back to Hub</button>
+    </div>
+    <p class="mb-6 text-gray-600 bg-purple-50 p-3 rounded-lg border-l-4 border-purple-400">
+        **Rule Focus:** Dialogue, direct address, and lists (set C). **Type the entire corrected sentence** into the box.
+    </p>
+    <div id="list-practice-c-content" class="space-y-6"></div>
+    <div class="mt-8 text-center">
+        <button onclick="checkAnswers('list-practice-c')" class="bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-8 rounded-full transition transform hover:scale-105 shadow-md">Check My Commas</button>
+        <button onclick="resetActivity('list-practice-c')" class="ml-4 bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-3 px-8 rounded-full transition transform hover:scale-105 shadow-md">Reset</button>
+    </div>
+    <div id="list-practice-c-score" class="mt-6 text-center text-xl font-semibold"></div>
+</div>
+
+<div id="list-practice-d" class="activity-container hidden bg-white p-6 sm:p-8 rounded-xl shadow-2xl mb-10">
+    <div class="flex justify-between items-center mb-6 border-b pb-4">
+        <h2 class="text-3xl font-bold text-pink-700">7. More Mixed Practice (D)</h2>
+        <button onclick="showActivity('home')" class="text-pink-500 hover:text-pink-700 font-semibold transition">← Back to Hub</button>
+    </div>
+    <p class="mb-6 text-gray-600 bg-pink-50 p-3 rounded-lg border-l-4 border-pink-400">
+        **Rule Focus:** Dialogue, direct address, and lists (set D). **Type the entire corrected sentence** into the box.
+    </p>
+    <div id="list-practice-d-content" class="space-y-6"></div>
+    <div class="mt-8 text-center">
+        <button onclick="checkAnswers('list-practice-d')" class="bg-pink-600 hover:bg-pink-700 text-white font-bold py-3 px-8 rounded-full transition transform hover:scale-105 shadow-md">Check My Commas</button>
+        <button onclick="resetActivity('list-practice-d')" class="ml-4 bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-3 px-8 rounded-full transition transform hover:scale-105 shadow-md">Reset</button>
+    </div>
+    <div id="list-practice-d-score" class="mt-6 text-center text-xl font-semibold"></div>
+</div>
+
+<div id="jane-eyre-free-edit" class="activity-container hidden bg-white p-6 sm:p-8 rounded-xl shadow-2xl mb-10">
+    <div class="flex justify-between items-center mb-6 border-b pb-4">
+        <h2 class="text-3xl font-bold text-red-700">8. Jane Eyre Passage (Free Edit)</h2>
+        <button onclick="showActivity('home')" class="text-red-500 hover:text-red-700 font-semibold transition">← Back to Hub</button>
+    </div>
+    <p class="mb-6 text-gray-600 bg-red-50 p-3 rounded-lg border-l-4 border-red-400">
+        **Challenge:** Review the full literary passage. Add any necessary commas, correct any punctuation errors (full stops, semi-colons, etc.), and maintain correct British grammar.
+    </p>
+    <div id="jane-eyre-edit-intro" class="mb-4 text-sm text-gray-600 italic">
+        In this extract from Charlotte Brontë’s Jane Eyre, Jane and Mr. Rochester are due to be married. However, before they can marry one another it is revealed that Mr. Rochester is already married to another woman who he has imprisoned in the attic because she is mentally ill. In this scene, Mr. Rochester reveals his wife to Jane and to the men who have stopped his marriage.
+    </div>
+    <textarea id="jane-eyre-input" rows="25" class="practice-sentence-input text-base leading-relaxed"></textarea>
+    <div class="mt-8 text-center">
+        <button onclick="checkAnswers('jane-eyre-free-edit')" class="bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-8 rounded-full transition transform hover:scale-105 shadow-md">Check My Edit</button>
+        <button onclick="resetActivity('jane-eyre-free-edit')" class="ml-4 bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-3 px-8 rounded-full transition transform hover:scale-105 shadow-md">Reset</button>
+    </div>
+    <div id="jane-eyre-feedback"></div>
+</div>
+
+<div id="elephant-facts-free-edit" class="activity-container hidden bg-white p-6 sm:p-8 rounded-xl shadow-2xl mb-10">
+    <div class="flex justify-between items-center mb-6 border-b pb-4">
+        <h2 class="text-3xl font-bold text-teal-700">9. Elephant Facts (Free Edit)</h2>
+        <button onclick="showActivity('home')" class="text-teal-500 hover:text-teal-700 font-semibold transition">← Back to Hub</button>
+    </div>
+    <p class="mb-6 text-gray-600 bg-teal-50 p-3 rounded-lg border-l-4 border-teal-400">
+        **Challenge:** Review the factual passage. Correct comma splices, incorrect punctuation (colons, semi-colons, question marks), and add any necessary commas.
+    </p>
+    <textarea id="elephant-facts-input" rows="25" class="practice-sentence-input text-base leading-relaxed"></textarea>
+    <div class="mt-8 text-center">
+        <button onclick="checkAnswers('elephant-facts-free-edit')" class="bg-teal-600 hover:bg-teal-700 text-white font-bold py-3 px-8 rounded-full transition transform hover:scale-105 shadow-md">Check My Edit</button>
+        <button onclick="resetActivity('elephant-facts-free-edit')" class="ml-4 bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-3 px-8 rounded-full transition transform hover:scale-105 shadow-md">Reset</button>
+    </div>
+    <div id="elephant-facts-feedback"></div>
+</div>
+
+<div id="correct-sentence-choice" class="activity-container hidden bg-white p-6 sm:p-8 rounded-xl shadow-2xl mb-10">
+    <div class="flex justify-between items-center mb-6 border-b pb-4">
+        <h2 class="text-3xl font-bold text-orange-700">10. Correct Sentence Choice</h2>
+        <button onclick="showActivity('home')" class="text-orange-500 hover:text-orange-700 font-semibold transition">← Back to Hub</button>
+    </div>
+    <p class="mb-6 text-gray-600 bg-orange-50 p-3 rounded-lg border-l-4 border-orange-400">
+        **Rule Focus:** Choose the single sentence in each pair that uses punctuation correctly, focusing on clauses and introductory phrases.
+    </p>
+    <div id="correct-sentence-choice-content" class="space-y-8"></div>
+    <div class="mt-8 text-center">
+        <button onclick="checkAnswers('correct-sentence-choice')" class="bg-orange-600 hover:bg-orange-700 text-white font-bold py-3 px-8 rounded-full transition transform hover:scale-105 shadow-md">Submit Answers</button>
+        <button onclick="resetActivity('correct-sentence-choice')" class="ml-4 bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-3 px-8 rounded-full transition transform hover:scale-105 shadow-md">Reset</button>
+    </div>
+    <div id="correct-sentence-choice-score" class="mt-6 text-center text-xl font-semibold"></div>
+</div>
+
+
+<script>
+    // --- Data Configuration (Centralized) ---
+
+    // Utility function to generate full sentence input structure
+    const createFullSentenceItem = (id, original, correct, reason) => ({
+        id,
+        original,
+        correct,
+        reason
+    });
+
+    const allActivities = {
+        'lists-beginner': {
+            type: 'full-sentence',
+            data: [
+                createFullSentenceItem(1, "I can't decide if I want to go to the party, the game or the dance.", "I can't decide if I want to go to the party, the game or the dance.", "Commas separate items in a list. In British English, the comma before 'or' is often omitted."),
+                createFullSentenceItem(2, "The mouse the rat and the gerbil all looked very similar to me.", "The mouse, the rat and the gerbil all looked very similar to me.", "Commas separate items in a list: 'mouse', 'rat'."),
+                createFullSentenceItem(3, "My mum made me clean my room do the dishes and walk the dog.", "My mum made me clean my room, do the dishes and walk the dog.", "Commas separate parallel actions in a list: 'clean my room', 'do the dishes'."),
+                createFullSentenceItem(4, "I asked Jeff Ryan and Brad to come over after school.", "I asked Jeff, Ryan and Brad to come over after school.", "Commas separate names in a list: 'Jeff', 'Ryan'."),
+                createFullSentenceItem(5, "Don't forget to call your dad do your homework and fold your clothes.", "Don't forget to call your dad, do your homework and fold your clothes.", "Commas separate parallel actions: 'call your dad', 'do your homework'."),
+                createFullSentenceItem(6, "Sophia Martha and Roberta all earned a great score on the test.", "Sophia, Martha and Roberta all earned a great score on the test.", "Commas separate names in a list: 'Sophia', 'Martha'."),
+                createFullSentenceItem(7, "This weekend I wore two shirts three skirts and four pairs of shoes.", "This weekend I wore two shirts, three skirts and four pairs of shoes.", "Commas separate clothing items in a list: 'two shirts', 'three skirts'."),
+                createFullSentenceItem(8, "On holiday I will visit New York Chicago and Indianapolis.", "On holiday I will visit New York, Chicago and Indianapolis.", "Commas separate cities in a list: 'New York', 'Chicago'."),
+                createFullSentenceItem(9, "After school, the teachers principals and cafeteria workers will have a meeting.", "After school, the teachers, principals and cafeteria workers will have a meeting.", "Commas separate roles in a list: 'teachers', 'principals'."),
+                createFullSentenceItem(10, "The new club will meet on Tuesdays Wednesdays and Thursdays.", "The new club will meet on Tuesdays, Wednesdays and Thursdays.", "Commas separate days in a list: 'Tuesdays', 'Wednesdays'."),
+                createFullSentenceItem(11, "Do you want to eat a salad a hamburger and some chips?", "Do you want to eat a salad, a hamburger and some chips?", "Commas separate food items in a list: 'salad', 'hamburger'."),
+                createFullSentenceItem(12, "We have to return to the library drive to the store and stop at the post office.", "We have to return to the library, drive to the store and stop at the post office.", "Commas separate actions in a list: 'return to the library', 'drive to the store'.")
+            ]
+        },
+        'mixed-grade4': {
+            type: 'full-sentence',
+            data: [
+                createFullSentenceItem(1, "John, you should visit your grandmother this weekend.", "John, you should visit your grandmother this weekend.", "The comma is correctly used to set off the name in direct address."),
+                createFullSentenceItem(2, "He said \"I'm not going to lose my game today.\"", "He said, “I'm not going to lose my game today.”", "A comma is required before direct speech."),
+                createFullSentenceItem(3, "I wanted to buy some balloons a cake and some ice cream for the party.", "I wanted to buy some balloons, a cake and some ice cream for the party.", "Commas separate items in a list: 'balloons', 'a cake'."),
+                createFullSentenceItem(4, "Yes I love to go to the beach with my family.", "Yes, I love to go to the beach with my family.", "A comma is required after the introductory word 'Yes'."),
+                createFullSentenceItem(5, "Mrs. Smith did you say you ate pizza for dinner yesterday?", "Mrs Smith, did you say you ate pizza for dinner yesterday?", "A comma is required after the name in direct address. The full stop after 'Mrs' is correct in British English, but often omitted, so we remove the original full stop to simplify correction."),
+                createFullSentenceItem(6, "We went to visit the park the museum and the cinema this weekend.", "We went to visit the park, the museum and the cinema this weekend.", "Commas separate places in a list: 'the park', 'the museum'."),
+                createFullSentenceItem(7, "No I did not want to order a purple unicorn for her birthday gift.", "No, I did not want to order a purple unicorn for her birthday gift.", "A comma is required after the introductory word 'No'."),
+                createFullSentenceItem(8, "Tom Kevin and Abby all studied volcanoes last year.", "Tom, Kevin and Abby all studied volcanoes last year.", "Commas separate names in a list: 'Tom', 'Kevin'."),
+                createFullSentenceItem(9, "\"Go now\" said the mean man \"and do not return.\"", "“Go now,” said the mean man, “and do not return.”", "Commas are required to set off the speech tag: after 'now' and after 'man'."),
+                createFullSentenceItem(10, "Sophie are you going to take ballet again next year?", "Sophie, are you going to take ballet again next year?", "A comma is required after the name in direct address."),
+                createFullSentenceItem(11, "My favourite animals are bears tigers and dogs.", "My favourite animals are bears, tigers and dogs.", "Commas separate items in a list: 'bears', 'tigers'. (Used British spelling of favourite)."),
+                createFullSentenceItem(12, "\"Mum we need to leave now\" said Roberta.", "“Mum, we need to leave now,” said Roberta.", "A comma is required after the name in direct address ('Mum,') and to separate the speech from the tag (after 'now,'). (Used British spelling of Mum).")
+            ]
+        },
+        'comma-cop': {
+            type: 'multiple-choice',
+            data: [
+                { id: 1, question: "Which sentence correctly uses commas?", options: { A: "I'd like a hamburger, salad, and milk for supper.", B: "I'd like a hamburger salad and milk for supper.", C: "I'd like a hamburger salad and, milk for supper.", D: "I'd like, a hamburger, salad, and milk for supper." }, correct: 'A', reason: "Option A correctly uses commas to separate items in a list. Options B and C are missing commas, and Option D has an unnecessary comma after 'like'." },
+                { id: 2, question: "Which sentence correctly uses commas?", options: { E: "Louisa has a pair of red white and blue shorts.", F: "Louisa has a pair, of red, white and blue shorts.", G: "Louisa has a pair of red, white, and blue shorts.", H: "Louisa has a pair of red white, and blue, shorts." }, correct: 'G', reason: "Option G correctly uses commas to separate the adjectives 'red', 'white', and 'blue' in a series. (Note: Option G uses the serial comma which is acceptable but not standard in British English; however, it is the only grammatically correct option among the choices.)" },
+                { id: 3, question: "Which sentence correctly uses commas?", options: { I: "The shopkeeper said \"Everything is on sale,\"", J: "The, shopkeeper said, \"Everything is on sale.\"", K: "The shopkeeper said \"Everything, is, on sale.\"", L: "The shopkeeper said, \"Everything is on sale.\"" }, correct: 'L', reason: "Option L correctly uses a comma to separate the speech tag ('The shopkeeper said') from the direct quotation. The other options misuse or omit the comma." },
+                { id: 4, question: "Which sentence correctly uses commas?", options: { M: "I was born on May 23 1991.", N: "I was, born on May 23, 1991.", O: "I was born on May, 23, 1991.", P: "I was born on May 23, 1991." }, correct: 'P', reason: "Option P correctly uses a comma to separate the day from the year in a date. The others either omit the comma or place it incorrectly." },
+                { id: 5, question: "Which sentence correctly uses commas?", options: { Q: "My favourite cousins live in, Los Angeles California.", R: "My favourite cousins, live, in Los Angeles, California.", S: "My favourite cousins live in Los Angeles California.", T: "My favourite cousins live in Los Angeles, California." }, correct: 'T', reason: "Option T correctly uses a comma to separate the city from the country/state ('Los Angeles, California'). (Used British spelling of favourite)." },
+                { id: 6, question: "Which sentence correctly uses commas?", options: { U: "The cake smelled delicious, which made the children hungry.", V: "The cake smelled delicious which made the children hungry.", W: "The cake smelled delicious which made the children, hungry.", X: "The cake smelled delicious which, made the children hungry." }, correct: 'U', reason: "Option U correctly uses a comma to introduce the non-defining (extra information) clause beginning with 'which'. The others omit or misplace the comma." },
+                { id: 7, question: "Which sentence correctly uses commas?", options: { Y: "Grown-ups, kids, and animals all enjoyed the good weather.", Z: "Grown-ups, kids, and animals, all enjoyed the good weather.", A: "Grown-ups kids and animals all enjoyed the good weather.", B: "Grown-ups kids, and animals all enjoyed the good weather." }, correct: 'Y', reason: "Option Y correctly separates items in a list. (Note: Option Y uses the serial comma which is acceptable but not standard in British English; however, it is the only grammatically correct option among the choices.)" },
+                { id: 8, question: "Which sentence correctly uses commas?", options: { C: "The next century will begin on January 1 2100.", D: "The next century will begin on January 1, 2100.", E: "The next century will, begin on January 1 2100.", F: "The next century will begin on January, 1, 2100." }, correct: 'D', reason: "Option D correctly uses a comma to separate the day from the year in a date. The others omit or misplace the comma." },
+                { id: 9, question: "Which sentence correctly uses commas?", options: { G: "My chores are to make my bed clean my room and set the table for dinner.", H: "My chores are to make my bed, clean my room and set the table for dinner.", I: "My chores are to make my bed, clean my room, and set the table for dinner.", J: "My chores are to, make my bed clean my room and, set the table for dinner." }, correct: 'H', reason: "Option H correctly uses commas to separate actions in a list. In strict British English, the comma before 'and' is omitted." },
+                { id: 10, question: "Which sentence correctly uses commas?", options: { K: "Mr. Linnett, the principal of our school, is very funny.", L: "Mr. Linnett the principal of our school is very funny.", M: "Mr. Linnett the principal of, our school, is very funny.", N: "Mr. Linnett, the principal of our school is, very funny." }, correct: 'K', reason: "Option K correctly uses a pair of commas to set off the non-essential phrase ('the principal of our school') which provides extra information about Mr. Linnett." },
+                { id: 11, question: "Which sentence correctly uses commas?", options: { O: "Brett wanted to be here, today but he, has the flu.", P: "Brett wanted to be here today, but he has the flu.", Q: "Brett wanted to be here today, but, he, has the flu.", R: "Brett wanted, to be here today but he has the flu." }, correct: 'P', reason: "Option P correctly uses a comma before the coordinating conjunction 'but' when joining two independent clauses ('Brett wanted...' and 'he has...')." },
+                { id: 12, question: "Which sentence correctly uses commas?", options: { S: "Grandma grew up in Bismarck, North Dakota.", T: "Grandma grew up in Bismarck North Dakota.", U: "Grandma grew up in Bismarck North, Dakota.", V: "Grandma grew up in, Bismarck North Dakota." }, correct: 'S', reason: "Option S correctly uses a comma to separate the city from the state ('Bismarck, North Dakota')." }
+            ]
+        },
+        'complex-sentences': {
+            type: 'full-sentence',
+            data: [
+                createFullSentenceItem(1, "She scrambled up the slope missed her footing fell heavily on the ground and held her breath.", "She scrambled up the slope, missed her footing, fell heavily on the ground and held her breath.", "Commas are needed to separate the multiple parallel verbs/actions: 'scrambled up the slope', 'missed her footing', 'fell heavily on the ground'."),
+                createFullSentenceItem(2, "The main point she kept reminding herself was to concentrate until the competition was over.", "The main point, she kept reminding herself, was to concentrate until the competition was over.", "Commas are needed to set off the parenthetical/interrupting phrase 'she kept reminding herself'."),
+                createFullSentenceItem(3, "We wanted to go to the concert. Unfortunately there were no more tickets available.", "We wanted to go to the concert. Unfortunately, there were no more tickets available.", "A comma is needed after the introductory discourse marker/adverb 'Unfortunately'."),
+                createFullSentenceItem(4, "My friend Harry who is a great swimmer likes to go scuba diving.", "My friend Harry, who is a great swimmer, likes to go scuba diving.", "Commas are needed to set off the non-essential or non-defining relative clause 'who is a great swimmer'."),
+                createFullSentenceItem(5, "If he could only stay quiet he had a good chance of being ignored by his teacher.", "If he could only stay quiet, he had a good chance of being ignored by his teacher.", "A comma is needed after the introductory subordinate clause 'If he could only stay quiet'."),
+                createFullSentenceItem(6, "The wolf scenting its prey scrambled down the slope sending a spray of earth and leaves over the ground.", "The wolf, scenting its prey, scrambled down the slope, sending a spray of earth and leaves over the ground.", "Commas set off the descriptive/participial phrase 'scenting its prey' and the non-essential phrase 'sending a spray...'"),
+                createFullSentenceItem(7, "The boy knowing it was getting late hurried home.", "The boy, knowing it was getting late, hurried home.", "Commas are needed to set off the non-essential participial phrase 'knowing it was getting late'."),
+                createFullSentenceItem(8, "If you trust in yourself he explained enthusiastically you will be able to overcome all obstacles.", "If you trust in yourself, he explained enthusiastically, you will be able to overcome all obstacles.", "Commas are needed after the introductory clause ('If you trust in yourself') and to set off the dialogue/speech tag ('he explained enthusiastically')."),
+                createFullSentenceItem(9, "The old man who was waiting for the train pulled on his gloves against the cold wind.", "The old man, who was waiting for the train, pulled on his gloves against the cold wind.", "Commas are needed to set off the non-essential or non-defining relative clause 'who was waiting for the train'."),
+                createFullSentenceItem(10, "I needed to buy sun-cream sunglasses and sandals for my holiday.", "I needed to buy sun-cream, sunglasses and sandals for my holiday.", "Commas are needed to separate items in a list: 'sun-cream', 'sunglasses'.")
+            ]
+        },
+        'list-practice-b': {
+            type: 'full-sentence',
+            data: [
+                createFullSentenceItem(1, "The girls are thinking of buying some chocolate, some candy and a card.", "The girls are thinking of buying some chocolate, some candy and a card.", "The comma is correctly placed after the first item, 'chocolate', in the list of three. No comma is needed before 'and' in British English."),
+                createFullSentenceItem(2, "The dog the cat and the hamster all ran free in my grandma’s garden.", "The dog, the cat and the hamster all ran free in my grandma’s garden.", "Commas separate the subjects in the list: 'The dog', 'the cat'."),
+                createFullSentenceItem(3, "My dad asked me to go to the store buy some milk and take it to our neighbour.", "My dad asked me to go to the store, buy some milk and take it to our neighbour.", "Commas separate the parallel actions: 'go to the store', 'buy some milk'. (Used British spelling of neighbour)."),
+                createFullSentenceItem(4, "We saw Owen Ian and Jacob at the game on Friday night.", "We saw Owen, Ian and Jacob at the game on Friday night.", "Commas separate the names in the list: 'Owen', 'Ian'."),
+                createFullSentenceItem(5, "Take your homework your lunch and your coat to school tomorrow.", "Take your homework, your lunch and your coat to school tomorrow.", "Commas separate the items in the list: 'your homework', 'your lunch'."),
+                createFullSentenceItem(6, "Mrs. Cane Mrs. Craft and Mr. Thomas will all go to the meeting on Thursday.", "Mrs Cane, Mrs Craft and Mr Thomas will all go to the meeting on Thursday.", "Commas separate the names in the list: 'Mrs Cane', 'Mrs Craft'. (Removed redundant full stops after 'Mrs' and 'Mr' for simplified British English style)."),
+                createFullSentenceItem(7, "Yesterday I ate three hot dogs two pieces of cake and five donuts.", "Yesterday I ate three hot dogs, two pieces of cake and five donuts.", "Commas separate the food items in the list: 'three hot dogs', 'two pieces of cake'."),
+                createFullSentenceItem(8, "Paris Los Angeles and Dallas are my favourite cities in the world.", "Paris, Los Angeles and Dallas are my favourite cities in the world.", "Commas separate the cities in the list: 'Paris', 'Los Angeles'. (Used British spelling of favourite)."),
+                createFullSentenceItem(9, "During lunch, Robbie sat with Frankie John and Chris.", "During lunch, Robbie sat with Frankie, John and Chris.", "A comma is needed after 'Frankie' to separate the names in the list: 'Frankie', 'John'."),
+                createFullSentenceItem(10, "Can you come to my house on Monday Wednesday and Friday this week?", "Can you come to my house on Monday, Wednesday and Friday this week?", "Commas separate the days in the list: 'Monday', 'Wednesday'."),
+                createFullSentenceItem(11, "At the zoo we saw lions tigers monkeys and bears.", "At the zoo we saw lions, tigers, monkeys and bears.", "Commas separate the animals in the list: 'lions', 'tigers', 'monkeys'."),
+                createFullSentenceItem(12, "Today is the day we will visit my aunt my uncle and my favourite cousins.", "Today is the day we will visit my aunt, my uncle and my favourite cousins.", "Commas separate the relatives in the list: 'my aunt', 'my uncle'. (Used British spelling of favourite).")
+            ]
+        },
+        'list-practice-c': {
+            type: 'full-sentence',
+            data: [
+                createFullSentenceItem(1, "Michelle said, “We should go to my favourite restaurant.”", "Michelle said, “We should go to my favourite restaurant.”", "The comma is correctly placed before the direct speech. (Used British spelling of favourite)."),
+                createFullSentenceItem(2, "Owen I think you are a good friend.", "Owen, I think you are a good friend.", "A comma is needed after the name in direct address, 'Owen'."),
+                createFullSentenceItem(3, "They are going to sell bananas apples and celery at the market.", "They are going to sell bananas, apples and celery at the market.", "Commas separate the items in the list: 'bananas', 'apples'."),
+                createFullSentenceItem(4, "Yes we are allowed to visit the museum this weekend.", "Yes, we are allowed to visit the museum this weekend.", "A comma is needed after the introductory word 'Yes'."),
+                createFullSentenceItem(5, "Jim what is your favourite food?", "Jim, what is your favourite food?", "A comma is needed after the name in direct address, 'Jim'. (Used British spelling of favourite)."),
+                createFullSentenceItem(6, "My teacher taught us about the history geography and the language of France today.", "My teacher taught us about the history, geography and the language of France today.", "Commas separate the subjects in the list: 'history', 'geography'."),
+                createFullSentenceItem(7, "Roger can you help me move this heavy box?", "Roger, can you help me move this heavy box?", "A comma is needed after the name in direct address, 'Roger'."),
+                createFullSentenceItem(8, "Ryan Jan and Marsha are three of my best friends.", "Ryan, Jan and Marsha are three of my best friends.", "Commas separate the names in the list: 'Ryan', 'Jan'."),
+                createFullSentenceItem(9, "“If you do your homework” said my dad “you will do well on your test.”", "“If you do your homework,” said my dad, “you will do well on your test.”", "Commas are needed to set off the speech tag: after 'homework' and after 'dad'."),
+                createFullSentenceItem(10, "Jenny let’s go to the park and play basketball.", "Jenny, let’s go to the park and play basketball.", "A comma is needed after the name in direct address, 'Jenny'."),
+                createFullSentenceItem(11, "The policeman said “You should always wear a helmet when you ride your bike.”", "The policeman said, “You should always wear a helmet when you ride your bike.”", "A comma is required before the direct speech."),
+                createFullSentenceItem(12, "“Katie I think you’re going to win the game today” said Angela.", "“Katie, I think you’re going to win the game today,” said Angela.", "A comma is needed after the name in direct address ('Katie,') and to separate the speech from the tag (after 'today,').")
+            ]
+        },
+        'list-practice-d': {
+            type: 'full-sentence',
+            data: [
+                createFullSentenceItem(1, "Marie, we should drink tea with our biscuits.", "Marie, we should drink tea with our biscuits.", "The comma is correctly used to set off the name in direct address. (Used British term 'biscuits')."),
+                createFullSentenceItem(2, "She said “I think my bus is late today.”", "She said, “I think my bus is late today.”", "A comma is required before direct speech."),
+                createFullSentenceItem(3, "My sister studies maths science and French at the high school.", "My sister studies maths, science and French at the high school.", "Commas separate subjects in a list: 'maths', 'science'. (Used British term 'maths')."),
+                createFullSentenceItem(4, "No he doesn’t have any pets at his house.", "No, he doesn’t have any pets at his house.", "A comma is required after the introductory word 'No'."),
+                createFullSentenceItem(5, "Steven can you call my brother to tell him I will be late?", "Steven, can you call my brother to tell him I will be late?", "A comma is required after the name in direct address, 'Steven'."),
+                createFullSentenceItem(6, "My dad had to go to work visit the library and buy groceries today.", "My dad had to go to work, visit the library and buy groceries today.", "Commas separate parallel actions in a list: 'go to work', 'visit the library'."),
+                createFullSentenceItem(7, "Hey did you see the new film with Bradley Cooper?", "Hey, did you see the new film with Bradley Cooper?", "A comma is required after the introductory interjection 'Hey'. (Used British term 'film')."),
+                createFullSentenceItem(8, "Bob Debbie and Seth live in Chicago with their families.", "Bob, Debbie and Seth live in Chicago with their families.", "Commas separate names in a list: 'Bob', 'Debbie'."),
+                createFullSentenceItem(9, "“I think” stated my mum “we will get ice cream after this.”", "“I think,” stated my mum, “we will get ice cream after this.”", "Commas are needed to set off the speech tag: after 'think' and after 'mum'. (Used British spelling of mum)."),
+                createFullSentenceItem(10, "Teresa your dress looks amazing!", "Teresa, your dress looks amazing!", "A comma is required after the name in direct address, 'Teresa'."),
+                createFullSentenceItem(11, "Brian said “I want to eat tacos hamburgers and chips.”", "Brian said, “I want to eat tacos, hamburgers and chips.”", "A comma is required before the direct speech, and after 'tacos' and 'hamburgers' to separate items in the list."),
+                createFullSentenceItem(12, "“George we can go to the shop together” said Stacy.", "“George, we can go to the shop together,” said Stacy.", "A comma is needed after the name in direct address ('George,') and to separate the speech from the tag (after 'together,'). (Used British term 'shop').")
+            ]
+        },
+        'jane-eyre-free-edit': {
+            type: 'free-edit',
+            data: {
+                original: `He passed on and ascended the stairs still holding my hand and still beckoning the gentlemen to
+follow him which they did. We mounted the first staircase passed up the gallery proceeded to the
+third storey: the low black door opened by Mr. Rochester's master-key admitted us to the
+tapestried room with its great bed and its pictorial cabinet.
+"You know this place Mason" said our guide; "she bit and stabbed you here."
+He lifted the hangings from the wall uncovering the second door: this too he opened. In a room
+without a window there burnt a fire guarded by a high and strong fender and a lamp suspended
+from the ceiling by a chain. Grace Poole bent over the fire apparently cooking something in a
+saucepan. In the deep shade at the farther end of the room a figure ran backwards and forwards.
+What it was whether beast or human being one could not at first sight tell: it grovelled seemingly on
+all fours; it snatched and growled like some strange wild animal: but it was covered with clothing
+and a quantity of dark grizzled hair wild as a mane hid its head and face.
+"Good-morrow Mrs. Poole!" said Mr. Rochester. "How are you? and how is your charge to-day?"
+"We're tolerable sir I thank you" replied Grace lifting the boiling mess carefully onto the hob: "rather
+snappish but not 'rageous."
+A fierce cry seemed to give the lie to her favourable report: the clothed hyena rose up and stood
+tall on its hind-feet.
+"Ah! sir she sees you!" exclaimed Grace: "you'd better not stay."
+"Only a few moments Grace: you must allow me a few moments."
+"Take care then sir! — for God's sake take care!"
+The maniac bellowed: she parted her shaggy locks from her visage and gazed wildly at her
+visitors. I recognised well that purple face — those bloated features. Mrs. Poole advanced.
+"Keep out of the way" said Mr. Rochester thrusting her aside: "she has no knife now I suppose and
+I'm on my guard."
+"One never knows what she has sir: she is so cunning: it is not in mortal discretion to fathom her
+craft."
+"We had better leave her" whispered Mason.
+"Go to the devil!" was his brother-in-law's recommendation.
+"'Ware!" cried Grace. The three gentlemen retreated simultaneously. Mr. Rochester flung me
+behind him: the lunatic sprang and grappled his throat viciously and laid her teeth to his cheek:
+they struggled. She was a big woman in stature almost equalling her husband and corpulent
+besides: she showed virile force in the contest — more than once she almost throttled him athletic
+as he was. He could have settled her with a well-planted blow; but he would not strike: he would
+only wrestle. At last he mastered her arms; Grace Poole gave him a cord and he pinioned them
+behind her: with more rope which was at hand he bound her to a chair. The operation was
+performed amidst the fiercest yells and the most convulsive plunges. Mr. Rochester then turned to
+the spectators: he looked at them with a smile both acrid and desolate.
+"That is my wife" said he.`,
+                correct: `He passed on and ascended the stairs, still holding my hand, and still beckoning the gentlemen to follow him, which they did. We mounted the first staircase, passed up the gallery, proceeded to the third storey: the low, black door, opened by Mr Rochester's master-key, admitted us to the tapestried room, with its great bed and its pictorial cabinet.
+“You know this place, Mason,” said our guide; “she bit and stabbed you here.”
+He lifted the hangings from the wall, uncovering the second door: this, too, he opened. In a room without a window, there burnt a fire guarded by a high and strong fender, and a lamp suspended from the ceiling by a chain. Grace Poole bent over the fire, apparently cooking something in a saucepan. In the deep shade, at the farther end of the room, a figure ran backwards and forwards. What it was, whether beast or human being, one could not, at first sight, tell: it grovelled, seemingly, on all fours; it snatched and growled like some strange wild animal: but it was covered with clothing, and a quantity of dark, grizzled hair, wild as a mane, hid its head and face.
+“Good-morrow, Mrs Poole!” said Mr Rochester. “How are you? and how is your charge to-day?”
+“We’re tolerable, sir, I thank you,” replied Grace, lifting the boiling mess carefully onto the hob: “rather snappish, but not ‘rageous.”
+A fierce cry seemed to give the lie to her favourable report: the clothed hyena rose up, and stood tall on its hind-feet.
+“Ah! sir, she sees you!” exclaimed Grace: “you’d better not stay.”
+“Only a few moments, Grace: you must allow me a few moments.”
+“Take care then, sir!—for God’s sake, take care!”
+The maniac bellowed: she parted her shaggy locks from her visage, and gazed wildly at her visitors. I recognised well that purple face, those bloated features. Mrs Poole advanced.
+“Keep out of the way,” said Mr Rochester, thrusting her aside: “she has no knife now, I suppose, and I’m on my guard.”
+“One never knows what she has, sir: she is so cunning: it is not in mortal discretion to fathom her craft.”
+“We had better leave her,” whispered Mason.
+“Go to the devil!” was his brother-in-law’s recommendation.
+“'Ware!” cried Grace. The three gentlemen retreated simultaneously. Mr Rochester flung me behind him: the lunatic sprang and grappled his throat viciously, and laid her teeth to his cheek: they struggled. She was a big woman, in stature almost equalling her husband, and corpulent besides: she showed virile force in the contest—more than once she almost throttled him, athletic as he was. He could have settled her with a well-planted blow; but he would not strike: he would only wrestle. At last he mastered her arms; Grace Poole gave him a cord, and he pinioned them behind her: with more rope, which was at hand, he bound her to a chair. The operation was performed amidst the fiercest yells and the most convulsive plunges. Mr Rochester then turned to the spectators: he looked at them with a smile both acrid and desolate.
+“That is my wife,” said he.`,
+                explanation: "This authoritative version follows British punctuation rules, including: commas in series, using commas to set off non-defining clauses (like 'still holding my hand'), separating dialogue from speech tags, and correctly using dashes and colons where appropriate in the original 19th-century text style."
+            }
+        },
+        'elephant-facts-free-edit': {
+            type: 'free-edit',
+            data: {
+                original: `African and asian elephants are clearly the same species but there are many differences between
+them some of these differences include; size: ear shape head shape tusks
+The African elephant is significantly larger than the Asian elephant bull or male african elephants
+can grow up to four metres in height; whereas Asian elephants are never taller than three and a
+Half metres african elephants are significantly heavier too an asian male elephant weighs between
+3000 and 6000 kg whereas an african bull; male; elephant can weigh between 4000 and 7500
+kilograms
+if you look at the ear shape of the two types of Elephant. you will find significant differences the
+african elephant has bigger ears which actually look like a map of africa the asian elephant has
+smaller ears which strangely look rather like a map of india as india occupies a smaller
+geographical area than africa it seems a freak of nature that the elephants ears not only look like
+the continents they come from. They also actually correspond to those continents’ relative size.
+With the asian elephant’s ears being smaller than their african cousin’s
+closer examination of the elephants’ skulls reveals significant differences the asian elephant has a
+twin-domed head which has an indentation in the middle the african elephant’s head does not have
+an indentation and in fact the top of the african elephant’s skull is a single dome
+only some male asian elephants have tusks whereas all african elephants. Male and female. Have
+tusks the tusks of asian elephants tend to be smaller than those of african elephants
+given all these differences the question arises; can asian and african elephants interbreed! In fact.
+the answer is no because the differences are too great between them there is only one crossbred
+elephant on record. Which was a bull calf called ‘Motty’. Born in Chester Zoo in england in 1978?
+‘Motty’ died aged two weeks old in spite of receiving intensive care and sadly demonstrated that
+successful interbreeding between asian and african elephants is not possible`,
+                correct: `African and Asian elephants are clearly the same species but there are many differences between them. Some of these differences include: size, ear shape, head shape, tusks.
+
+The African elephant is significantly larger than the Asian elephant. Bull or male African elephants can grow up to four metres in height, whereas Asian elephants are never taller than three and a half metres. African elephants are significantly heavier too. An Asian male elephant weighs between 3,000 and 6,000 kg, whereas an African bull (male) elephant can weigh between 4,000 and 7,500 kilograms.
+
+If you look at the ear shape of the two types of elephant, you will find significant differences. The African elephant has bigger ears which actually look like a map of Africa. The Asian elephant has smaller ears which strangely look rather like a map of India. As India occupies a smaller geographical area than Africa, it seems a freak of nature that the elephants' ears not only look like the continents they come from, they also actually correspond to those continents' relative size, with the Asian elephant's ears being smaller than his or her African cousin's.
+
+Closer examination of the elephants’ skulls reveals significant differences. The Asian elephant has a twin-domed head, which has an indentation in the middle. The African elephant’s head has no such indentation and in fact the top of the African elephant’s skull is a single dome.
+
+Only some male Asian elephants have tusks, whereas all African elephants, male and female, have tusks. The tusks of Asian elephants tend to be smaller than those of African elephants.
+
+Given all these differences, the question arises: can Asian and African elephants interbreed? In fact, the answer is no because the differences are too great between them. There is only one crossbred elephant on record, which was a bull calf called 'Motty', born in Chester Zoo in England in 1978. 'Motty' died aged two weeks old in spite of receiving intensive care and sadly demonstrated that successful interbreeding between Asian and African elephants is not possible.`,
+                explanation: "This corrected version addresses multiple punctuation issues, including replacing comma splices and incorrect semi-colons with full stops, correctly listing items using British English non-serial commas, setting off non-essential clauses, and ensuring correct capitalisation."
+            }
+        },
+        'correct-sentence-choice': {
+            type: 'multiple-choice',
+            data: [
+                { id: 1, question: "Choose the correctly written sentence from the following pair.", options: { a: "Content for the first time in his life, Bryce returned to school.", b: "Content for the first time in his life Bryce returned to school." }, correct: 'a', reason: "Option A is correct. A comma is required after the introductory phrase 'Content for the first time in his life'." },
+                { id: 2, question: "Choose the correctly written sentence from the following pair.", options: { a: "After eating the train conductor finished his scheduled route and headed back to the train yard.", b: "After eating, the train conductor finished his scheduled route and headed back to the train yard." }, correct: 'b', reason: "Option B is correct. A comma is required after the short introductory participial phrase 'After eating'." },
+                { id: 3, question: "Choose the correctly written sentence from the following pair.", options: { a: "I will never forget this moment, as long as I live.", b: "I will never forget this moment as long as I live." }, correct: 'a', reason: "Option A is correct. A comma is required to separate the main clause from the dependent clause 'as long as I live', as the dependent clause provides non-essential (or less tightly integrated) information." },
+                { id: 4, question: "Choose the correctly written sentence from the following pair.", options: { a: "By the time we finally made up our minds, the contract had been awarded to someone else.", b: "By the time we finally made up our minds the contract had been awarded to someone else." }, correct: 'a', reason: "Option A is correct. A comma is required after the introductory subordinate clause 'By the time we finally made up our minds'." },
+                { id: 5, question: "Choose the correctly written sentence from the following pair.", options: { a: "Indignant, Mr Caster left the restaurant without leaving a tip.", b: "Indignant Mr Caster left the restaurant without leaving a tip." }, correct: 'a', reason: "Option A is correct. A comma is required after the introductory adjective/modifier 'Indignant'." },
+                { id: 6, question: "Choose the correctly written sentence from the following pair.", options: { a: "Wayne was delighted when he found out he'd been awarded the leading role in the show.", b: "Wayne was delighted, when he found out he'd been awarded the leading role in the show." }, correct: 'a', reason: "Option A is correct. No comma is needed here, as the clause 'when he found out...' is essential to the meaning of 'delighted' and is too short/integrated to require separation." },
+                { id: 7, question: "Choose the correctly written sentence from the following pair.", options: { a: "By designing the programme ourselves, we saved a great deal of expense.", b: "By designing the programme ourselves we saved a great deal of expense." }, correct: 'a', reason: "Option A is correct. A comma is required after the introductory phrase 'By designing the programme ourselves'. (Used British spelling of programme)." }
+            ]
+        }
+    };
+
+    // --- Core UI & Logic Functions ---
+
+    /**
+     * Helper to clean up user input (trim whitespace, normalize quotes).
+     * @param {string} text - The raw text input.
+     * @returns {string} - The cleaned text.
+     */
+    const cleanInput = (text) => {
+        return text
+            .trim()
+            .replace(/[\u201C\u201D]/g, '“') // Normalize curly double quotes to straight for easier comparison
+            .replace(/[\u2018\u2019]/g, '’') // Normalize curly single quotes
+            .replace(/\s+/g, ' '); // Replace multiple spaces with a single space
+    };
+
+    /**
+     * Hides all activity containers and shows the selected one, or the home screen.
+     * @param {string} activityId - The ID of the activity to show, or 'home'.
+     */
+    const showActivity = (activityId) => {
+        document.querySelectorAll('.activity-container').forEach(el => el.classList.add('hidden'));
+
+        if (activityId === 'home') {
+            document.getElementById('activity-tiles').classList.remove('hidden');
+            document.querySelector('header').classList.remove('hidden');
+        } else {
+            document.getElementById('activity-tiles').classList.add('hidden');
+            document.querySelector('header').classList.add('hidden');
+            const container = document.getElementById(activityId);
+            if (container) {
+                container.classList.remove('hidden');
+                resetActivity(activityId);
+                // Dynamically render content on view
+                if (allActivities[activityId].type === 'full-sentence') {
+                    renderFullSentenceActivity(activityId);
+                } else if (allActivities[activityId].type === 'multiple-choice') {
+                    renderMultipleChoiceActivity(activityId);
+                } else if (allActivities[activityId].type === 'free-edit') {
+                    renderFreeEditActivity(activityId);
+                }
+            }
+        }
+    };
+
+    /**
+     * Renders activities that require the user to input the full, corrected sentence.
+     * @param {string} activityId - ID of the activity to render.
+     */
+    const renderFullSentenceActivity = (activityId) => {
+        const { data } = allActivities[activityId];
+        const contentDiv = document.getElementById(`${activityId}-content`);
+        contentDiv.innerHTML = data.map((item, index) => `
+            <div class="practice-sentence-box" data-id="${item.id}">
+                <p class="text-gray-700 mb-2"><strong>${index + 1}.</strong> ${item.original}</p>
+                <textarea id="${activityId}-input-${item.id}" rows="2" class="practice-sentence-input" placeholder="Type the corrected sentence here..."></textarea>
+                <div id="${activityId}-feedback-${item.id}"></div>
+            </div>
+        `).join('');
+        document.getElementById(`${activityId}-score`).innerHTML = '';
+    };
+
+    /**
+     * Renders activities that require the user to select an option from a set of choices.
+     * @param {string} activityId - ID of the activity to render.
+     */
+    const renderMultipleChoiceActivity = (activityId) => {
+        const { data } = allActivities[activityId];
+        const contentDiv = document.getElementById(`${activityId}-content`);
+        contentDiv.innerHTML = data.map((item, index) => `
+            <div class="space-y-2" data-id="${item.id}">
+                <p class="text-lg font-semibold text-gray-800">${index + 1}. ${item.question || ''}</p>
+                <div id="${activityId}-options-${item.id}" class="mc-options">
+                    ${Object.entries(item.options).map(([key, value]) => `
+                        <label class="mc-option">
+                            <input type="radio" name="${activityId}-group-${item.id}" value="${key}">
+                            <span class="font-mono">${key}.</span> ${value}
+                        </label>
+                    `).join('')}
+                </div>
+                <div id="${activityId}-feedback-${item.id}"></div>
+            </div>
+        `).join('');
+        document.getElementById(`${activityId}-score`).innerHTML = '';
+    };
+
+    /**
+     * Renders free-edit activities (single large textarea).
+     * @param {string} activityId - ID of the activity to render.
+     */
+    const renderFreeEditActivity = (activityId) => {
+        const { data } = allActivities[activityId];
+        const inputElement = document.getElementById(`${activityId}-input`);
+        const feedbackDiv = document.getElementById(`${activityId}-feedback`);
+
+        // Set the initial text
+        inputElement.value = data.original;
+        feedbackDiv.innerHTML = '';
+    };
+
+    /**
+     * Resets a specific activity, clearing inputs and feedback.
+     * @param {string} activityId - ID of the activity to reset.
+     */
+    const resetActivity = (activityId) => {
+        const container = document.getElementById(activityId);
+        if (!container) return;
+
+        container.querySelectorAll('textarea').forEach(textarea => {
+            if (allActivities[activityId].type === 'free-edit') {
+                textarea.value = allActivities[activityId].data.original;
+            } else {
+                textarea.value = '';
+            }
+            textarea.classList.remove('bg-red-50', 'bg-green-50');
+            textarea.disabled = false;
+        });
+        container.querySelectorAll('input[type="radio"]').forEach(radio => {
+            radio.checked = false;
+            radio.disabled = false;
+            radio.closest('.mc-option').classList.remove('correct-choice', 'incorrect-choice');
+        });
+        container.querySelectorAll('[id$="-feedback"]').forEach(feedback => feedback.innerHTML = '');
+        container.querySelectorAll('[id$="-score"]').forEach(score => score.innerHTML = '');
+    };
+
+
+    // --- Checking Logic Dispatcher ---
+
+    /**
+     * Dispatches the checking process based on the activity type.
+     * @param {string} activityId - ID of the activity to check.
+     */
+    const checkAnswers = (activityId) => {
+        const activity = allActivities[activityId];
+        if (!activity) return;
+
+        if (activity.type === 'full-sentence') {
+            checkFullSentenceAnswers(activityId, activity.data);
+        } else if (activity.type === 'multiple-choice') {
+            checkMultipleChoiceAnswers(activityId, activity.data);
+        } else if (activity.type === 'free-edit') {
+            checkFreeEditAnswer(activityId, activity.data);
+        }
+    };
+
+    // --- Full Sentence Checking Logic (Activities 1, 2, 4, 5, 6, 7) ---
+
+    /**
+     * Checks answers for full-sentence input activities.
+     */
+    const checkFullSentenceAnswers = (activityId, data) => {
+        let correctCount = 0;
+
+        data.forEach(item => {
+            const inputElement = document.getElementById(`${activityId}-input-${item.id}`);
+            const feedbackDiv = document.getElementById(`${activityId}-feedback-${item.id}`);
+            const userAnswer = cleanInput(inputElement.value);
+            const correctAnswer = cleanInput(item.correct);
+
+            inputElement.disabled = true; // Lock the input after checking
+
+            if (userAnswer === correctAnswer) {
+                correctCount++;
+                feedbackDiv.innerHTML = `<div class="feedback correct">✅ Correct!</div>`;
+            } else {
+                feedbackDiv.innerHTML = `
+                    <div class="feedback incorrect">❌ Incorrect.</div>
+                    <div class="correct-answer-box">
+                        <p class="font-bold mb-1">Correct Answer:</p>
+                        <p>${item.correct}</p>
+                        <p class="mt-2 font-bold mb-1">Reason (British English):</p>
+                        <p class="font-normal">${item.reason}</p>
+                    </div>
+                `;
+            }
+        });
+
+        const scoreDiv = document.getElementById(`${activityId}-score`);
+        scoreDiv.innerHTML = `You scored ${correctCount} out of ${data.length}!`;
+    };
+
+    // --- Multiple Choice Checking Logic (Activities 3, 10) ---
+
+    /**
+     * Checks answers for multiple-choice activities.
+     */
+    const checkMultipleChoiceAnswers = (activityId, data) => {
+        let correctCount = 0;
+
+        data.forEach(item => {
+            const optionsDiv = document.getElementById(`${activityId}-options-${item.id}`);
+            const feedbackDiv = document.getElementById(`${activityId}-feedback-${item.id}`);
+            const selected = optionsDiv.querySelector(`input[name="${activityId}-group-${item.id}"]:checked`);
+
+            // Disable all inputs for this question
+            optionsDiv.querySelectorAll('input').forEach(input => input.disabled = true);
+
+            // Clear previous highlighting
+            optionsDiv.querySelectorAll('.mc-option').forEach(label => label.classList.remove('correct-choice', 'incorrect-choice'));
+
+            const isCorrect = selected && selected.value === item.correct;
+
+            if (isCorrect) {
+                correctCount++;
+                feedbackDiv.innerHTML = `<div class="feedback correct">✅ Correct!</div>`;
+                selected.closest('.mc-option').classList.add('correct-choice');
+            } else {
+                feedbackDiv.innerHTML = `
+                    <div class="feedback incorrect">❌ Incorrect.</div>
+                    <div class="correct-answer-box">
+                        <p class="font-bold mb-1">Reason:</p>
+                        <p class="font-normal">${item.reason}</p>
+                    </div>
+                `;
+                // Highlight the user's choice (if made) as incorrect, and the true answer as correct
+                if (selected) {
+                    selected.closest('.mc-option').classList.add('incorrect-choice');
+                }
+                const correctAnswerLabel = optionsDiv.querySelector(`input[value="${item.correct}"]`).closest('.mc-option');
+                if (correctAnswerLabel) {
+                    correctAnswerLabel.classList.add('correct-choice');
+                }
+            }
+        });
+
+        const scoreDiv = document.getElementById(`${activityId}-score`);
+        scoreDiv.innerHTML = `You scored ${correctCount} out of ${data.length}!`;
+    };
+
+    // --- Free Edit Checking Logic (Activities 8, 9) ---
+
+    /**
+     * Checks answers for free-edit activities (comparison only, no score).
+     */
+    const checkFreeEditAnswer = (activityId, data) => {
+        const inputElement = document.getElementById(`${activityId}-input`);
+        const feedbackDiv = document.getElementById(`${activityId}-feedback`);
+        const userAnswer = inputElement.value; // Don't clean the input heavily, let the user compare raw text
+        const correctAnswer = data.correct;
+
+        inputElement.disabled = true;
+
+        feedbackDiv.innerHTML = `
+            <div class="feedback correct">
+                Your edit has been locked for review. Scroll down to compare your version with the authoritative, corrected version (following British Punctuation).
+            </div>
+            <div class="correct-answer-box mt-6">
+                <p class="font-bold mb-3 text-lg">Authoritative Corrected Passage:</p>
+                <p class="text-base font-normal whitespace-pre-wrap">${correctAnswer}</p>
+                <p class="mt-4 font-bold mb-1 text-lg">Explanation:</p>
+                <p class="text-base font-normal">${data.explanation}</p>
+            </div>
+        `;
+    };
+
+    // Initialize the application by showing the home screen
+    document.addEventListener('DOMContentLoaded', () => {
+        showActivity('home');
+    });
+
+</script>
